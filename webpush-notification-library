@@ -1,0 +1,91 @@
+you need service worker for it
+
+const webpush = require("web-push");
+
+// keys to webpush
+
+
+// keys to webpush
+const publicVapidKey =
+  "";
+const privateVapidKey = "";
+
+webpush.setVapidDetails(
+  "mailto:aatishraj123009@gmail.com",
+  publicVapidKey,
+  privateVapidKey
+);
+
+// subscribe route
+app.post("/", (req, res) => {
+  // get pushSubscription object
+  const subscription = req.body;
+  console.log(req.body);
+
+  //   send 201 - resource collected
+  res.status(201).json({});
+
+  //   create payload
+  const payload = JSON.stringify({ title: "Push test" });
+
+  //   pass the object into the sendNotfication function
+  webpush
+    .sendNotification(subscription, payload)
+    .catch((err) => console.error(err));
+});
+
+
+******************************
+******************************
+*
+*
+*
+*
+               CLIENT FILE
+*
+*
+
+*
+*
+*******************************
+
+const publicVapidKey =
+  "";
+
+// all functions in one async function with service worker
+
+
+
+
+const subscription = await register.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+  });
+
+
+//   send push notificaiton
+  console.log("sending push...");
+  await fetch("/subscribe", {
+    method: "POST",
+    body: JSON.stringify(subscription),
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+
+
+*******************
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}

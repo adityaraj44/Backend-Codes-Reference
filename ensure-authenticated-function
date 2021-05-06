@@ -1,0 +1,25 @@
+// this file does in config folder
+
+module.exports = {
+  ensureAuthenticated: function (req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+
+    res.redirect("url to redirect if fails");
+  },
+  forwardAuthenticated: function (req, res, next) {
+    if (!req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("redirect to url if passed");
+  },
+};
+
+
+// import in route file
+const { ensureAuthenticated } = require("../config/auth");
+
+router.get('/after-passing', ensureAuthenticated, (req,res)=>{
+    res.render('anything')
+} )

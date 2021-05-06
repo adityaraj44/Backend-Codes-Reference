@@ -1,0 +1,149 @@
+#!/usr/bin/env node
+const program = require("commander");
+const { prompt } = require("inquirer");
+const {
+  addCustomer,
+  findCustomer,
+  updateCustomer,
+  removeCustomer,
+  listCustomers,
+} = require("./index");
+
+// customer questions
+// Customer Questions
+const questions = [
+  {
+    type: "input",
+    name: "firstName",
+    message: "Customer First Name",
+  },
+  {
+    type: "input",
+    name: "lastName",
+    message: "Customer Last Name",
+  },
+  {
+    type: "input",
+    name: "phone",
+    message: "Customer Phone Number",
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "Customer Email Address",
+  },
+];
+
+program.version("1.0.0").description("Client Management System");
+
+// program
+//   .command("add <firstname> <lastname> <phone> <email>")
+//   .alias("a")
+//   .description("Add a customer")
+//   .action((firstName, lastName, phone, email) => {
+//     addCustomer({ firstName, lastName, phone, email });
+//   });
+// Add Command
+program
+  .command("add")
+  .alias("a")
+  .description("Add a customer")
+  .action(() => {
+    prompt(questions).then((answers) => addCustomer(answers));
+  });
+
+program
+  .command("find <name>")
+  .alias("f")
+  .description("Find a customer")
+  .action((name) => {
+    findCustomer(name);
+  });
+
+// Update Command
+program
+  .command("update <_id>")
+  .alias("u")
+  .description("Update a customer")
+  .action((_id) => {
+    prompt(questions).then((answers) => updateCustomer(_id, answers));
+  });
+
+// Remove Command
+program
+  .command("remove <_id>")
+  .alias("r")
+  .description("Remove a customer")
+  .action((_id) => removeCustomer(_id));
+
+// List Command
+program
+  .command("list")
+  .alias("l")
+  .description("List all customers")
+  .action(() => listCustomers());
+
+program.parse(process.argv);
+
+****************************
+****************************
+
+
+// code written in main server files
+
+// import model
+const Customer = require("./models/customer");
+
+// Add Customer
+const addCustomer = (customer) => {
+  Customer.create(customer).then((customer) => {
+    console.info("New Customer Added");
+    // db.close();
+  });
+};
+
+// Find Customer
+const findCustomer = (name) => {
+  // Make case insensitive
+  const search = new RegExp(name, "i");
+  Customer.find({ $or: [{ firstName: search }, { lastName: search }] }).then(
+    (customer) => {
+      console.info(customer);
+      console.info(`${customer.length} matches`);
+      //   db.close();
+    }
+  );
+};
+// Update Customer
+const updateCustomer = (_id, customer) => {
+  Customer.updateOne({ _id }, customer).then((customer) => {
+    console.info("Customer Updated");
+    // db.close();
+  });
+};
+
+// Remove Customer
+const removeCustomer = (_id) => {
+  Customer.remove({ _id }).then((customer) => {
+    console.info("Customer Removed");
+    // db.close();
+  });
+};
+
+// List Customers
+const listCustomers = () => {
+  Customer.find().then((customers) => {
+    console.info(customers);
+    console.info(`${customers.length} customers`);
+    // db.close();
+  });
+};
+
+// export all methods
+module.exports = {
+  addCustomer,
+  findCustomer,
+  updateCustomer,
+  removeCustomer,
+  listCustomers,
+};

@@ -1,0 +1,11 @@
+add this to main server.js file
+
+// importing
+const passport = require('passport');
+
+// passport config
+require("./config/passport")(passport);
+
+// passport middleware
+app.use(passport.initialize());
+app.use(passport.session());

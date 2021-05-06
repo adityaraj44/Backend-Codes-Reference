@@ -1,0 +1,14 @@
+const socketio = require("socket.io");
+
+const io = socketio(server);
+
+// when client connects
+io.on('connection',(socket) =>{
+    socket.on(code goes here)
+
+
+//runs when user disconnects
+socket.on('disconnect',()=>{
+    code goes here
+} )
+})

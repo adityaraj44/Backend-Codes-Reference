@@ -1,0 +1,4 @@
+module.exports = {
+  MONGOURI:
+    "url to database",
+};
