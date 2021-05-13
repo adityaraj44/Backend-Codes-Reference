@@ -1,0 +1,23 @@
+let timerId = null;
+
+function debounce(func, timer) {
+  if (timerId) {
+    clearTimeout(timerId);
+  }
+  timerId = setTimeout(() => {
+    func();
+  }, timer);
+}
+
+// typing event
+textarea.addEventListener("keyup", (e) => {
+  socket.emit("typing", { username: username });
+});
+
+let typingDiv = document.querySelector(".typing");
+socket.on("typing", (data) => {
+  typingDiv.innerText = `${data.username} is typing...`;
+  debounce(function () {
+    typingDiv.innerText = "";
+  }, 1000);
+});

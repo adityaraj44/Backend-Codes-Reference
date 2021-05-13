@@ -1,0 +1,8 @@
+// set global variable
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
+
+can be any varible in place of user

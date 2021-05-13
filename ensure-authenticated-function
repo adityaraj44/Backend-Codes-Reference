@@ -16,6 +16,18 @@ module.exports = {
   },
 };
 
+ensureGuest: (req, res, next) => {
+    if (req.isAuthenticated()) {
+      res.redirect("/home");
+    } else {
+      return next();
+    }
+  },
+};
+
+
+
+
 
 // import in route file
 const { ensureAuthenticated } = require("../config/auth");

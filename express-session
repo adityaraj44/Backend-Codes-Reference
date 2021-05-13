@@ -1,0 +1,12 @@
+// express session
+app.use(
+  session({
+    secret: "cat",
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
+
+
+to use mongostore database to store user after auth as a cookie or something

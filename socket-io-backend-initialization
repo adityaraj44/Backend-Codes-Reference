@@ -12,3 +12,8 @@ socket.on('disconnect',()=>{
     code goes here
 } )
 })
+
+
+io.emit -> to everyone
+socket.broadcast.emit -> same to everyone but not the sender
+socket.emit -> send everything
